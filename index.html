@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 8 Payment Standards — Rent by ZIP (2025 vs 2026)</title>
+<style>
+  :root {
+    --bg: #0f172a; --card: #1e293b; --line: #334155;
+    --text: #e2e8f0; --muted: #94a3b8; --accent: #38bdf8;
+    --up: #4ade80; --down: #f87171;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.5;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 2rem 1rem 4rem; }
+  h1 { font-size: 1.5rem; margin: 0 0 .25rem; }
+  .sub { color: var(--muted); margin: 0 0 1.5rem; font-size: .95rem; }
+  form { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+  input {
+    flex: 1; min-width: 180px; padding: .7rem .9rem; font-size: 1.1rem;
+    border-radius: 8px; border: 1px solid var(--line);
+    background: var(--card); color: var(--text);
+  }
+  input:focus { outline: 2px solid var(--accent); }
+  button {
+    padding: .7rem 1.4rem; font-size: 1rem; font-weight: 600; cursor: pointer;
+    border-radius: 8px; border: none; background: var(--accent); color: #04293a;
+  }
+  .hint { color: var(--muted); font-size: .85rem; margin-bottom: 1.5rem; }
+  .hint code {
+    background: var(--card); padding: .1rem .4rem; border-radius: 4px;
+    cursor: pointer; border: 1px solid var(--line);
+  }
+  #out { margin-top: 1rem; }
+  .msg { background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+    padding: 1.2rem; color: var(--muted); }
+  .result-head { font-size: 1.2rem; font-weight: 700; margin: .5rem 0 1rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: .8rem; }
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    padding: 1rem 1.1rem; display: flex; flex-direction: column; gap: .15rem;
+  }
+  .card .bed { color: var(--muted); font-size: .8rem; text-transform: uppercase;
+    letter-spacing: .04em; }
+  .card .new { font-size: 2rem; font-weight: 800; line-height: 1.1; }
+  .card .old { color: var(--muted); font-size: .85rem; }
+  .card .delta { margin-top: .4rem; font-size: .9rem; font-weight: 700;
+    display: inline-flex; align-items: center; gap: .3rem; }
+  .delta-up { color: var(--up); }
+  .delta-down { color: var(--down); }
+  .delta-zero { color: var(--muted); }
+  .na { color: var(--muted); font-style: italic; }
+  footer { margin-top: 2rem; color: var(--muted); font-size: .8rem; }
+  footer a { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Payment Standards — Rent by ZIP code</h1>
+  <p class="sub">Section 8 (Housing Choice Voucher). Compare the maximum rent by number of bedrooms between <strong>2025</strong> and <strong>2026</strong>.</p>
+
+  <form id="form">
+    <input id="zip" type="text" inputmode="numeric" maxlength="5"
+           placeholder="Enter a ZIP code (e.g. 63074)" autocomplete="off">
+    <button type="submit">Look up</button>
+  </form>
+  <p class="hint">Examples: <code>63074</code> <code>63106</code> <code>63116</code> <code>63131</code></p>
+
+  <div id="out"></div>
+
+  <footer>
+    Data extracted from the <em>2025 / 2026 Payment Standards</em> documents.
+    Source openly available in this repository.
+  </footer>
+</div>
+
+<script src="data.js"></script>
+<script>
+  const out = document.getElementById('out');
+  const zipInput = document.getElementById('zip');
+  const YEARS = Object.keys(PAYMENT_DATA.years).sort();
+  const BEDROOMS = PAYMENT_DATA.bedrooms;
+  const money = n => (n < 0 ? '-$' : '$') + Math.abs(n).toLocaleString('en-US');
+
+  function deltaLine(va, vb) {
+    if (va == null || vb == null) return '<div class="delta delta-zero">—</div>';
+    const d = vb - va;
+    if (d === 0) return '<div class="delta delta-zero">no change</div>';
+    const cls = d > 0 ? 'delta-up' : 'delta-down';
+    const tri = d > 0 ? '▲' : '▼';
+    const sign = d > 0 ? '+' : '';
+    const pct = va ? `${sign}${(d / va * 100).toFixed(1)}%` : '';
+    return `<div class="delta ${cls}">${tri} ${sign}${money(d)} (${pct})</div>`;
+  }
+
+  function render(zip) {
+    const a = PAYMENT_DATA.years[YEARS[0]][zip] || null;
+    const b = PAYMENT_DATA.years[YEARS[1]][zip] || null;
+    if (!a && !b) {
+      out.innerHTML = `<div class="msg">ZIP code <strong>${zip}</strong> was not found in the ${YEARS.join(' or ')} data.</div>`;
+      return;
+    }
+
+    const cards = BEDROOMS.map((bed, i) => {
+      const va = a ? a[i] : null;
+      const vb = b ? b[i] : null;
+      const big = vb != null ? money(vb) : (va != null ? money(va) : '<span class="na">N/A</span>');
+      return `<div class="card">
+        <div class="bed">${bed}</div>
+        <div class="new">${big}</div>
+        <div class="old">${YEARS[0]}: ${va != null ? money(va) : 'N/A'}</div>
+        ${deltaLine(va, vb)}
+      </div>`;
+    }).join('');
+
+    out.innerHTML = `
+      <div class="result-head">ZIP code ${zip} — <span style="color:var(--accent)">${YEARS[1]}</span> vs ${YEARS[0]}</div>
+      <div class="grid">${cards}</div>`;
+  }
+
+  document.getElementById('form').addEventListener('submit', e => {
+    e.preventDefault();
+    const zip = zipInput.value.trim();
+    if (/^\d{5}$/.test(zip)) {
+      render(zip);
+      history.replaceState(null, '', '#' + zip);
+    } else {
+      out.innerHTML = `<div class="msg">Please enter a valid 5-digit ZIP code.</div>`;
+    }
+  });
+
+  // Click an example to look it up
+  document.querySelectorAll('.hint code').forEach(c => {
+    c.addEventListener('click', () => {
+      zipInput.value = c.textContent;
+      document.getElementById('form').requestSubmit();
+    });
+  });
+
+  // Support deep links like index.html#63074
+  if (/^#\d{5}$/.test(location.hash)) {
+    zipInput.value = location.hash.slice(1);
+    render(zipInput.value);
+  }
+</script>
+</body>
+</html>

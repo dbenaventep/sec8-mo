@@ -1,0 +1,4 @@
+# Windows/WSL & Dropbox metadata sidecar files
+*:Zone.Identifier
+*:com.dropbox.attrs
+__pycache__/
