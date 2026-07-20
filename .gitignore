@@ -2,3 +2,6 @@
 *:Zone.Identifier
 *:com.dropbox.attrs
 __pycache__/
+
+# API keys (never commit)
+.env

@@ -8,7 +8,7 @@
   :root {
     --bg: #0f172a; --card: #1e293b; --line: #334155;
     --text: #e2e8f0; --muted: #94a3b8; --accent: #38bdf8;
-    --up: #4ade80; --down: #f87171; --best: #fbbf24;
+    --up: #4ade80; --down: #f87171; --best: #fbbf24; --warn: #fbbf24;
   }
   * { box-sizing: border-box; }
   body {
@@ -65,6 +65,51 @@
   .delta-down { color: var(--down); }
   .delta-zero { color: var(--muted); }
   .na { color: var(--muted); font-style: italic; }
+  /* Benchmark line inside a bedroom card */
+  .card .fmr { color: var(--muted); font-size: .78rem; }
+
+  /* Section heading + source note */
+  .sec-head { font-size: 1.05rem; font-weight: 700; margin: 2rem 0 .2rem; }
+  .sec-note { color: var(--muted); font-size: .8rem; margin: 0 0 .9rem; }
+
+  /* Meter: one ratio against a limit (same-ramp track) */
+  .meter-box {
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    padding: 1.1rem 1.2rem; margin-bottom: 1.2rem;
+  }
+  .meter-top { display: flex; flex-wrap: wrap; gap: .5rem 1rem;
+    align-items: baseline; justify-content: space-between; }
+  .meter-val { font-size: 2rem; font-weight: 800; line-height: 1.1; }
+  .meter-state { font-weight: 700; font-size: .9rem; }
+  .meter-sub { color: var(--muted); font-size: .85rem; margin-top: .15rem; }
+  .track {
+    position: relative; height: 10px; border-radius: 999px; margin: .8rem 0 .35rem;
+    background: color-mix(in srgb, var(--fill) 22%, transparent);
+    overflow: hidden;
+  }
+  .track .fill { height: 100%; border-radius: 999px; background: var(--fill); }
+  .track .limit {
+    position: absolute; top: -3px; bottom: -3px; width: 2px;
+    background: var(--muted); opacity: .9;
+  }
+  .track-legend { display: flex; justify-content: space-between;
+    color: var(--muted); font-size: .72rem; }
+
+  .state-good { --fill: var(--up); color: var(--up); }
+  .state-warn { --fill: var(--warn); color: var(--warn); }
+  .state-bad  { --fill: var(--down); color: var(--down); }
+
+  /* KPI row of stat tiles */
+  .kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: .7rem; }
+  .kpi {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 10px; padding: .8rem .9rem;
+    display: flex; flex-direction: column;
+  }
+  /* Reserve two lines so values stay aligned when a label wraps. */
+  .kpi .k-label { color: var(--muted); font-size: .75rem; min-height: 2.5em; }
+  .kpi .k-val { font-size: 1.35rem; font-weight: 700; line-height: 1.25; }
+  .kpi .k-flag { font-size: .75rem; font-weight: 700; margin-top: .1rem; }
 
   /* Compare chips */
   .chips { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 1rem; min-height: 1px; }
@@ -132,8 +177,10 @@
   </section>
 
   <footer style="margin-top:2rem;color:var(--muted);font-size:.8rem">
-    Data extracted from the <em>2025 / 2026 Payment Standards</em> documents.
-    Source openly available in this repository.
+    Payment standards from the <em>2025 / 2026 Payment Standards</em> documents.
+    Neighborhood data: U.S. Census Bureau ACS 5-year (ZCTA).
+    Benchmark rents: HUD Small Area Fair Market Rents.
+    All source code and data in this repository.
   </footer>
 </div>
 
@@ -163,26 +210,105 @@
   const out = document.getElementById('out');
   const zipInput = document.getElementById('zip');
 
+  const ACS = PAYMENT_DATA.acs || { byZip: {}, label: 'ACS' };
+  const SAFMR = PAYMENT_DATA.safmr || { byZip: {}, label: 'HUD SAFMR' };
+  const nfmt = n => n.toLocaleString('en-US');
+
+  // Meter: how far the voucher goes against the typical rent in that ZIP.
+  // Status colors always ship with an icon + label, never color alone.
+  function voucherMeter(zip) {
+    const std = rentsFor(Y1, zip);
+    const acs = ACS.byZip[zip];
+    if (!std || !acs || !acs.median_gross_rent) return '';
+    const TWO_BR = 2;
+    const ratio = std[TWO_BR] / acs.median_gross_rent;
+    const pct = Math.round(ratio * 100);
+
+    let cls, icon, label;
+    if (ratio >= 1.10)      { cls = 'state-good'; icon = '✓'; label = 'Above typical rent'; }
+    else if (ratio >= 0.95) { cls = 'state-warn'; icon = '≈'; label = 'About typical rent'; }
+    else                    { cls = 'state-bad';  icon = '!'; label = 'Below typical rent'; }
+
+    // Track spans 0-200% of typical rent; the 100% mark is the limit line.
+    const width = Math.min(100, pct / 200 * 100);
+    return `
+      <div class="meter-box ${cls}">
+        <div class="meter-top">
+          <div>
+            <div class="meter-val">${pct}%</div>
+            <div class="meter-sub">
+              2-bedroom standard ${money(std[TWO_BR])} vs. typical rent ${money(acs.median_gross_rent)} in this ZIP
+            </div>
+          </div>
+          <div class="meter-state">${icon} ${label}</div>
+        </div>
+        <div class="track">
+          <div class="fill" style="width:${width}%"></div>
+          <div class="limit" style="left:50%"></div>
+        </div>
+        <div class="track-legend"><span>0%</span><span>100% = typical rent</span><span>200%</span></div>
+      </div>`;
+  }
+
+  function kpiRow(zip) {
+    const acs = ACS.byZip[zip];
+    if (!acs) return '';
+    const tiles = [];
+    const add = (label, val, flag) => {
+      if (val == null) return;
+      tiles.push(`<div class="kpi"><div class="k-label">${label}</div>
+        <div class="k-val">${val}</div>${flag || ''}</div>`);
+    };
+
+    add('Population', nfmt(acs.population));
+    add('Median household income', money(acs.median_income));
+    add('Typical rent (all sizes)', money(acs.median_gross_rent));
+
+    // Rental supply is the make-or-break stat: a high standard is useless
+    // in a ZIP that is almost entirely owner-occupied.
+    if (acs.renter_pct != null) {
+      const low = acs.renter_pct < 15;
+      add('Homes that are rentals', acs.renter_pct + '%',
+        low ? `<div class="k-flag state-bad">! Very few rentals</div>` : '');
+    }
+    if (acs.poverty_pct != null) add('Poverty rate', acs.poverty_pct + '%');
+    if (acs.rent_burdened_pct != null)
+      add('Renters paying &gt;30% of income', acs.rent_burdened_pct + '%');
+    if (acs.mean_commute_min != null) add('Mean commute', acs.mean_commute_min + ' min');
+
+    return `
+      <div class="sec-head">Neighborhood profile</div>
+      <p class="sec-note">Source: ${ACS.label}. Census ZCTAs approximate ZIP codes.</p>
+      <div class="kpis">${tiles.join('')}</div>`;
+  }
+
   function render(zip) {
     const a = rentsFor(Y0, zip), b = rentsFor(Y1, zip);
     if (!a && !b) {
       out.innerHTML = `<div class="msg">ZIP code <strong>${zip}</strong> was not found in the ${Y0} or ${Y1} data.</div>`;
       return;
     }
+    const fmr = SAFMR.byZip[zip];
     const cards = BEDROOMS.map((bed, i) => {
       const va = a ? a[i] : null, vb = b ? b[i] : null;
       const big = vb != null ? money(vb) : (va != null ? money(va) : '<span class="na">N/A</span>');
       const c = change(va, vb);
+      // FMR only goes up to 4 bedrooms; there is no federal 5-bedroom figure.
+      const f = fmr && fmr[i] != null ? `<div class="fmr">Federal FMR: ${money(fmr[i])}</div>` : '';
       return `<div class="card">
         <div class="bed">${bed}</div>
         <div class="new">${big}</div>
         <div class="old">${Y0}: ${va != null ? money(va) : 'N/A'}</div>
         <div class="delta ${c ? c.cls : 'delta-zero'}">${c ? c.text : '—'}</div>
+        ${f}
       </div>`;
     }).join('');
+
     out.innerHTML = `
       <div class="result-head">ZIP code ${zip} — <span style="color:var(--accent)">${Y1}</span> vs ${Y0}</div>
-      <div class="grid">${cards}</div>`;
+      ${voucherMeter(zip)}
+      <div class="grid">${cards}</div>
+      ${kpiRow(zip)}`;
   }
 
   document.getElementById('form').addEventListener('submit', e => {

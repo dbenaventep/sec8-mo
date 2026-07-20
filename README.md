@@ -7,8 +7,11 @@ between **2025** and **2026**.
 ## Two tools
 
 - **Look up** — enter a single ZIP code and get, per bedroom size, the 2026 rent
-  (large), the 2025 rent (small), and a green ▲ / red ▼ triangle with the change
-  in dollars and percent.
+  (large), the 2025 rent (small), a green ▲ / red ▼ triangle with the change in
+  dollars and percent, and the federal FMR benchmark. Plus a **voucher power**
+  meter (how the standard compares to the typical rent actually charged in that
+  ZIP) and a **neighborhood profile** (income, rental supply, poverty, rent
+  burden, commute).
 - **Compare ZIPs** — add several ZIP codes and see them side by side in one
   table: rows are bedroom sizes, one column per ZIP. A ★ marks the highest 2026
   rent in each row.
@@ -29,9 +32,27 @@ Deep links work for both tools:
 | File | What it is |
 |------|------------|
 | `index.html` | The whole app (HTML + CSS + vanilla JS, no build step). |
-| `data.js` / `data.json` | Generated rent tables keyed by ZIP code. |
-| `parse.py` | Extracts the data from the source PDFs into `data.*`. |
+| `data.js` / `data.json` | Generated data: rents by ZIP + ACS and FMR context. |
+| `parse.py` | Extracts the payment standards from the source PDFs. |
+| `enrich.py` | Adds Census ACS and HUD SAFMR context to the data. |
 | `2025-Payment-Standards.pdf`, `2026-Payment-Standards.pdf` | Source documents. |
+
+## Data sources
+
+| Source | Used for | Vintage |
+|--------|----------|---------|
+| Payment Standards PDFs | Max rent by ZIP and bedroom size | 2025, 2026 |
+| [Census ACS 5-year](https://www.census.gov/data/developers/data-sets/acs-5year.html) | Income, typical rent, rental supply, poverty, rent burden, commute | 2024 (covers 2020–2024) |
+| [HUD Small Area FMR](https://www.huduser.gov/portal/dataset/fmr-api.html) | Federal benchmark rent per ZIP | 2026 |
+
+Caveats worth knowing:
+
+- ACS is a **5-year average** centered around 2022, so it trails the 2026
+  payment standards. It is good for structural context (who lives there, how
+  much housing is rented), not for current asking rents.
+- The Census reports on **ZCTAs**, which approximate but do not exactly match
+  USPS ZIP codes.
+- Federal FMR only goes up to 4 bedrooms; there is no 5-bedroom figure.
 
 ## Regenerating the data
 
@@ -42,7 +63,20 @@ pip install pypdf
 python3 parse.py
 ```
 
-This rewrites `data.json` and `data.js`.
+To also refresh the ACS / HUD context you need two free API credentials
+([Census](https://api.census.gov/data/key_signup.html),
+[HUD](https://www.huduser.gov/portal/dataset/fmr-api.html)) in a local `.env`
+file, which is gitignored and never shipped to the site:
+
+```bash
+cat > .env <<'EOF'
+CENSUS_API_KEY=your_key
+HUD_API_TOKEN=your_token
+EOF
+python3 enrich.py
+```
+
+Both scripts rewrite `data.json` and `data.js`.
 
 ## Enabling GitHub Pages
 
