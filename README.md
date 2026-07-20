@@ -4,14 +4,25 @@ A tiny static page to look up the **Housing Choice Voucher (Section 8) Payment
 Standards** by ZIP code and compare the maximum rent per number of bedrooms
 between **2025** and **2026**.
 
-Enter a ZIP code and you get, per bedroom size, the 2026 rent (large), the 2025
-rent (small), and a green ▲ / red ▼ triangle with the change in dollars and
-percent.
+## Two tools
+
+- **Look up** — enter a single ZIP code and get, per bedroom size, the 2026 rent
+  (large), the 2025 rent (small), and a green ▲ / red ▼ triangle with the change
+  in dollars and percent.
+- **Compare ZIPs** — add several ZIP codes and see them side by side in one
+  table: rows are bedroom sizes, one column per ZIP. A ★ marks the highest 2026
+  rent in each row.
 
 ## Live page
 
 Hosted with GitHub Pages from this repo's root: open `index.html`.
-Deep links work too, e.g. `…/index.html#63074`.
+
+Deep links work for both tools:
+
+| Link | Opens |
+|------|-------|
+| `…/index.html#63074` | Look up for ZIP 63074 |
+| `…/index.html#compare=63116,63106,63131` | Comparison of those three ZIPs |
 
 ## Files
 

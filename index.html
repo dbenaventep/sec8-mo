@@ -8,16 +8,26 @@
   :root {
     --bg: #0f172a; --card: #1e293b; --line: #334155;
     --text: #e2e8f0; --muted: #94a3b8; --accent: #38bdf8;
-    --up: #4ade80; --down: #f87171;
+    --up: #4ade80; --down: #f87171; --best: #fbbf24;
   }
   * { box-sizing: border-box; }
   body {
     margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
     background: var(--bg); color: var(--text); line-height: 1.5;
   }
-  .wrap { max-width: 760px; margin: 0 auto; padding: 2rem 1rem 4rem; }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 2rem 1rem 4rem; }
   h1 { font-size: 1.5rem; margin: 0 0 .25rem; }
   .sub { color: var(--muted); margin: 0 0 1.5rem; font-size: .95rem; }
+
+  /* Tabs */
+  .tabs { display: flex; gap: .4rem; border-bottom: 1px solid var(--line); margin-bottom: 1.5rem; }
+  .tab {
+    padding: .6rem 1.1rem; cursor: pointer; font-weight: 600; font-size: .95rem;
+    background: none; border: none; border-bottom: 2px solid transparent;
+    color: var(--muted); border-radius: 0;
+  }
+  .tab[aria-selected="true"] { color: var(--accent); border-bottom-color: var(--accent); }
+
   form { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: 1rem; }
   input {
     flex: 1; min-width: 180px; padding: .7rem .9rem; font-size: 1.1rem;
@@ -34,10 +44,11 @@
     background: var(--card); padding: .1rem .4rem; border-radius: 4px;
     cursor: pointer; border: 1px solid var(--line);
   }
-  #out { margin-top: 1rem; }
   .msg { background: var(--card); border: 1px solid var(--line); border-radius: 10px;
     padding: 1.2rem; color: var(--muted); }
   .result-head { font-size: 1.2rem; font-weight: 700; margin: .5rem 0 1rem; }
+
+  /* Single lookup cards */
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: .8rem; }
   .card {
     background: var(--card); border: 1px solid var(--line); border-radius: 12px;
@@ -49,29 +60,78 @@
   .card .old { color: var(--muted); font-size: .85rem; }
   .card .delta { margin-top: .4rem; font-size: .9rem; font-weight: 700;
     display: inline-flex; align-items: center; gap: .3rem; }
+
   .delta-up { color: var(--up); }
   .delta-down { color: var(--down); }
   .delta-zero { color: var(--muted); }
   .na { color: var(--muted); font-style: italic; }
-  footer { margin-top: 2rem; color: var(--muted); font-size: .8rem; }
-  footer a { color: var(--accent); }
+
+  /* Compare chips */
+  .chips { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 1rem; min-height: 1px; }
+  .chip {
+    display: inline-flex; align-items: center; gap: .45rem;
+    background: var(--card); border: 1px solid var(--line); border-radius: 999px;
+    padding: .35rem .5rem .35rem .8rem; font-size: .9rem; font-weight: 600;
+  }
+  .chip button {
+    all: unset; cursor: pointer; color: var(--muted); font-size: 1rem;
+    line-height: 1; padding: 0 .2rem;
+  }
+  .chip button:hover { color: var(--down); }
+
+  /* Compare table */
+  .table-scroll { overflow-x: auto; border-radius: 12px; border: 1px solid var(--line); }
+  table { width: 100%; border-collapse: collapse; background: var(--card); }
+  th, td { padding: .7rem .9rem; text-align: right; border-bottom: 1px solid var(--line);
+    white-space: nowrap; }
+  th:first-child, td:first-child {
+    text-align: left; position: sticky; left: 0; background: var(--card);
+    border-right: 1px solid var(--line);
+  }
+  thead th { background: #0b1220; color: var(--muted); font-size: .85rem; font-weight: 600; }
+  thead th:first-child { background: #0b1220; }
+  tbody tr:last-child td { border-bottom: none; }
+  td .big { font-size: 1.25rem; font-weight: 800; }
+  td .small { color: var(--muted); font-size: .78rem; }
+  td .chg { font-size: .78rem; font-weight: 700; }
+  td.best .big { color: var(--best); }
+  td.best .big::after { content: " ★"; font-size: .8rem; }
 </style>
 </head>
 <body>
 <div class="wrap">
   <h1>Payment Standards — Rent by ZIP code</h1>
-  <p class="sub">Section 8 (Housing Choice Voucher). Compare the maximum rent by number of bedrooms between <strong>2025</strong> and <strong>2026</strong>.</p>
+  <p class="sub">Section 8 (Housing Choice Voucher). Maximum rent by number of bedrooms, <strong>2025</strong> vs <strong>2026</strong>.</p>
 
-  <form id="form">
-    <input id="zip" type="text" inputmode="numeric" maxlength="5"
-           placeholder="Enter a ZIP code (e.g. 63074)" autocomplete="off">
-    <button type="submit">Look up</button>
-  </form>
-  <p class="hint">Examples: <code>63074</code> <code>63106</code> <code>63116</code> <code>63131</code></p>
+  <div class="tabs" role="tablist">
+    <button class="tab" id="tab-lookup" role="tab" aria-selected="true">Look up</button>
+    <button class="tab" id="tab-compare" role="tab" aria-selected="false">Compare ZIPs</button>
+  </div>
 
-  <div id="out"></div>
+  <!-- Look up panel -->
+  <section id="panel-lookup">
+    <form id="form">
+      <input id="zip" type="text" inputmode="numeric" maxlength="5"
+             placeholder="Enter a ZIP code (e.g. 63074)" autocomplete="off">
+      <button type="submit">Look up</button>
+    </form>
+    <p class="hint">Examples: <code>63074</code> <code>63106</code> <code>63116</code> <code>63131</code></p>
+    <div id="out"></div>
+  </section>
 
-  <footer>
+  <!-- Compare panel -->
+  <section id="panel-compare" hidden>
+    <form id="cform">
+      <input id="czip" type="text" inputmode="numeric" maxlength="5"
+             placeholder="Add a ZIP code to compare" autocomplete="off">
+      <button type="submit">Add</button>
+    </form>
+    <p class="hint">Try: <code>63116</code> <code>63106</code> <code>63131</code> — ★ marks the highest 2026 rent in each row.</p>
+    <div class="chips" id="chips"></div>
+    <div id="cout"></div>
+  </section>
+
+  <footer style="margin-top:2rem;color:var(--muted);font-size:.8rem">
     Data extracted from the <em>2025 / 2026 Payment Standards</em> documents.
     Source openly available in this repository.
   </footer>
@@ -79,71 +139,178 @@
 
 <script src="data.js"></script>
 <script>
-  const out = document.getElementById('out');
-  const zipInput = document.getElementById('zip');
   const YEARS = Object.keys(PAYMENT_DATA.years).sort();
+  const [Y0, Y1] = YEARS;                       // Y0 = older (2025), Y1 = newer (2026)
   const BEDROOMS = PAYMENT_DATA.bedrooms;
   const money = n => (n < 0 ? '-$' : '$') + Math.abs(n).toLocaleString('en-US');
 
-  function deltaLine(va, vb) {
-    if (va == null || vb == null) return '<div class="delta delta-zero">—</div>';
+  const rentsFor = (year, zip) => PAYMENT_DATA.years[year][zip] || null;
+  const known = zip => !!(rentsFor(Y0, zip) || rentsFor(Y1, zip));
+
+  // Shared change formatting -> {cls, text} or null when not comparable
+  function change(va, vb) {
+    if (va == null || vb == null) return null;
     const d = vb - va;
-    if (d === 0) return '<div class="delta delta-zero">no change</div>';
-    const cls = d > 0 ? 'delta-up' : 'delta-down';
-    const tri = d > 0 ? '▲' : '▼';
+    if (d === 0) return { cls: 'delta-zero', text: 'no change' };
     const sign = d > 0 ? '+' : '';
-    const pct = va ? `${sign}${(d / va * 100).toFixed(1)}%` : '';
-    return `<div class="delta ${cls}">${tri} ${sign}${money(d)} (${pct})</div>`;
+    return {
+      cls: d > 0 ? 'delta-up' : 'delta-down',
+      text: `${d > 0 ? '▲' : '▼'} ${sign}${money(d)} (${sign}${(d / va * 100).toFixed(1)}%)`,
+    };
   }
 
+  /* ---------------- Look up (single ZIP) ---------------- */
+  const out = document.getElementById('out');
+  const zipInput = document.getElementById('zip');
+
   function render(zip) {
-    const a = PAYMENT_DATA.years[YEARS[0]][zip] || null;
-    const b = PAYMENT_DATA.years[YEARS[1]][zip] || null;
+    const a = rentsFor(Y0, zip), b = rentsFor(Y1, zip);
     if (!a && !b) {
-      out.innerHTML = `<div class="msg">ZIP code <strong>${zip}</strong> was not found in the ${YEARS.join(' or ')} data.</div>`;
+      out.innerHTML = `<div class="msg">ZIP code <strong>${zip}</strong> was not found in the ${Y0} or ${Y1} data.</div>`;
       return;
     }
-
     const cards = BEDROOMS.map((bed, i) => {
-      const va = a ? a[i] : null;
-      const vb = b ? b[i] : null;
+      const va = a ? a[i] : null, vb = b ? b[i] : null;
       const big = vb != null ? money(vb) : (va != null ? money(va) : '<span class="na">N/A</span>');
+      const c = change(va, vb);
       return `<div class="card">
         <div class="bed">${bed}</div>
         <div class="new">${big}</div>
-        <div class="old">${YEARS[0]}: ${va != null ? money(va) : 'N/A'}</div>
-        ${deltaLine(va, vb)}
+        <div class="old">${Y0}: ${va != null ? money(va) : 'N/A'}</div>
+        <div class="delta ${c ? c.cls : 'delta-zero'}">${c ? c.text : '—'}</div>
       </div>`;
     }).join('');
-
     out.innerHTML = `
-      <div class="result-head">ZIP code ${zip} — <span style="color:var(--accent)">${YEARS[1]}</span> vs ${YEARS[0]}</div>
+      <div class="result-head">ZIP code ${zip} — <span style="color:var(--accent)">${Y1}</span> vs ${Y0}</div>
       <div class="grid">${cards}</div>`;
   }
 
   document.getElementById('form').addEventListener('submit', e => {
     e.preventDefault();
     const zip = zipInput.value.trim();
-    if (/^\d{5}$/.test(zip)) {
-      render(zip);
-      history.replaceState(null, '', '#' + zip);
-    } else {
+    if (!/^\d{5}$/.test(zip)) {
       out.innerHTML = `<div class="msg">Please enter a valid 5-digit ZIP code.</div>`;
+      return;
     }
+    render(zip);
+    history.replaceState(null, '', '#' + zip);
   });
 
-  // Click an example to look it up
+  /* ---------------- Compare (multiple ZIPs) ---------------- */
+  const cout = document.getElementById('cout');
+  const chipsEl = document.getElementById('chips');
+  const czipInput = document.getElementById('czip');
+  let selected = [];
+
+  function renderChips() {
+    chipsEl.innerHTML = selected.map(z =>
+      `<span class="chip">${z}<button data-zip="${z}" title="Remove">✕</button></span>`).join('');
+    chipsEl.querySelectorAll('button').forEach(b => {
+      b.addEventListener('click', () => {
+        selected = selected.filter(z => z !== b.dataset.zip);
+        renderCompare();
+      });
+    });
+  }
+
+  function renderCompare() {
+    renderChips();
+    history.replaceState(null, '', selected.length ? '#compare=' + selected.join(',') : '#');
+
+    if (selected.length === 0) {
+      cout.innerHTML = `<div class="msg">Add one or more ZIP codes to compare them side by side.</div>`;
+      return;
+    }
+
+    const rows = BEDROOMS.map((bed, i) => {
+      // Value shown big per ZIP: newer year, falling back to older
+      const shown = selected.map(z => {
+        const a = rentsFor(Y0, z), b = rentsFor(Y1, z);
+        return { va: a ? a[i] : null, vb: b ? b[i] : null };
+      });
+      const displayed = shown.map(s => s.vb != null ? s.vb : s.va);
+      const max = Math.max(...displayed.filter(v => v != null));
+
+      const cells = shown.map((s, j) => {
+        const v = displayed[j];
+        if (v == null) return `<td><span class="na">N/A</span></td>`;
+        const c = change(s.va, s.vb);
+        const isBest = v === max && displayed.filter(x => x != null).length > 1;
+        return `<td class="${isBest ? 'best' : ''}">
+          <div class="big">${money(v)}</div>
+          <div class="small">${Y0}: ${s.va != null ? money(s.va) : 'N/A'}</div>
+          <div class="chg ${c ? c.cls : 'delta-zero'}">${c ? c.text : '—'}</div>
+        </td>`;
+      }).join('');
+
+      return `<tr><td>${bed}</td>${cells}</tr>`;
+    }).join('');
+
+    cout.innerHTML = `
+      <div class="result-head">Comparing ${selected.length} ZIP code${selected.length > 1 ? 's' : ''} — big number is ${Y1}</div>
+      <div class="table-scroll"><table>
+        <thead><tr><th>Bedrooms</th>${selected.map(z => `<th>${z}</th>`).join('')}</tr></thead>
+        <tbody>${rows}</tbody>
+      </table></div>`;
+  }
+
+  function addZip(zip) {
+    if (!/^\d{5}$/.test(zip)) return 'Please enter a valid 5-digit ZIP code.';
+    if (selected.includes(zip)) return `ZIP code ${zip} is already in the comparison.`;
+    if (!known(zip)) return `ZIP code ${zip} was not found in the ${Y0} or ${Y1} data.`;
+    selected.push(zip);
+    return null;
+  }
+
+  document.getElementById('cform').addEventListener('submit', e => {
+    e.preventDefault();
+    const err = addZip(czipInput.value.trim());
+    if (err) { cout.innerHTML = `<div class="msg">${err}</div>`; return; }
+    czipInput.value = '';
+    renderCompare();
+  });
+
+  /* ---------------- Tabs ---------------- */
+  const tabs = {
+    lookup: [document.getElementById('tab-lookup'), document.getElementById('panel-lookup')],
+    compare: [document.getElementById('tab-compare'), document.getElementById('panel-compare')],
+  };
+
+  function showTab(name) {
+    for (const [key, [tab, panel]] of Object.entries(tabs)) {
+      const on = key === name;
+      tab.setAttribute('aria-selected', on);
+      panel.hidden = !on;
+    }
+    if (name === 'compare' && !cout.innerHTML) renderCompare();
+  }
+  tabs.lookup[0].addEventListener('click', () => showTab('lookup'));
+  tabs.compare[0].addEventListener('click', () => showTab('compare'));
+
+  // Click an example chip in either panel
   document.querySelectorAll('.hint code').forEach(c => {
     c.addEventListener('click', () => {
-      zipInput.value = c.textContent;
-      document.getElementById('form').requestSubmit();
+      const zip = c.textContent;
+      if (c.closest('#panel-compare')) {
+        if (!addZip(zip)) renderCompare();
+      } else {
+        zipInput.value = zip;
+        document.getElementById('form').requestSubmit();
+      }
     });
   });
 
-  // Support deep links like index.html#63074
-  if (/^#\d{5}$/.test(location.hash)) {
-    zipInput.value = location.hash.slice(1);
-    render(zipInput.value);
+  /* ---------------- Deep links ---------------- */
+  // #63074  -> single lookup      #compare=63116,63106 -> comparison
+  const hash = decodeURIComponent(location.hash.slice(1));
+  const cmatch = hash.match(/^compare=([\d,]+)$/);
+  if (cmatch) {
+    cmatch[1].split(',').forEach(z => addZip(z.trim()));
+    showTab('compare');
+    renderCompare();
+  } else if (/^\d{5}$/.test(hash)) {
+    zipInput.value = hash;
+    render(hash);
   }
 </script>
 </body>
