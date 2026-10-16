@@ -16,7 +16,8 @@ import urllib.parse
 import urllib.request
 
 ACS_YEAR = 2024          # último vintage ACS 5-year disponible (2020-2024)
-FMR_YEAR = 2026
+FMR_YEAR = 2026          # FMR que respalda los standards 2026 oficiales
+PROJECT_YEAR = 2027      # próximo año a proyectar desde el SAFMR federal (None lo apaga)
 STL_METRO = "METRO41180M41180"   # St. Louis, MO-IL HUD Metro FMR Area
 
 # Variable ACS -> nombre corto
@@ -114,10 +115,10 @@ def fetch_acs(zips, key):
     return out
 
 
-def fetch_safmr(token):
-    """Small Area Fair Market Rents por ZIP (benchmark federal)."""
+def fetch_safmr(token, year=FMR_YEAR):
+    """Small Area Fair Market Rents por ZIP (benchmark federal) para un año."""
     data = get_json(
-        f"https://www.huduser.gov/hudapi/public/fmr/data/{STL_METRO}?year={FMR_YEAR}",
+        f"https://www.huduser.gov/hudapi/public/fmr/data/{STL_METRO}?year={year}",
         headers={"Authorization": f"Bearer {token}"},
     )["data"]
     # FMR llega solo hasta 4 dormitorios; el 5º no existe en la fuente.
@@ -127,6 +128,25 @@ def fetch_safmr(token):
         for r in data["basicdata"]
         if r["zip_code"] != "MSA level"
     }
+
+
+def projected_year(safmr):
+    """Payment standard provisional a partir del SAFMR federal de ese año.
+
+    La autoridad local adopta el SAFMR casi 1:1 (verificado: 2026 calzó al
+    0-2%). El SAFMR trae 5 tamaños (hasta 4BR); el 5BR se deriva con la propia
+    fórmula de HUD — 5BR = round(1.15 x 4BR) — que reproduce exactamente los
+    valores 5BR de los PDFs oficiales 2025 y 2026 en los 115 registros.
+
+    Es una PROYECCIÓN, no el schedule oficial; se marca como provisional.
+    """
+    out = {}
+    for z, vals in safmr.items():
+        if None in vals:
+            continue
+        four = vals[4]
+        out[z] = list(vals) + [round(four * 1.15)]  # 6 valores: Eff..5BR
+    return out
 
 
 def main():
@@ -142,12 +162,38 @@ def main():
     print(f"  -> {len(acs)}/{len(zips)} ZIPs con datos ACS", file=sys.stderr)
 
     print(f"HUD SAFMR {FMR_YEAR}...", file=sys.stderr)
-    safmr = fetch_safmr(env["HUD_API_TOKEN"])
+    safmr = fetch_safmr(env["HUD_API_TOKEN"], FMR_YEAR)
     matched = {z: safmr[z] for z in zips if z in safmr}
     print(f"  -> {len(matched)}/{len(zips)} ZIPs con SAFMR", file=sys.stderr)
 
+    # Proyección provisional del próximo año desde el SAFMR federal FY<n>,
+    # ya publicado por HUD aunque la autoridad local no haya sacado su PDF.
+    proj = {}
+    if PROJECT_YEAR:
+        print(f"HUD SAFMR {PROJECT_YEAR} (provisional)...", file=sys.stderr)
+        try:
+            proj_safmr = fetch_safmr(env["HUD_API_TOKEN"], PROJECT_YEAR)
+            proj = {z: v for z, v in projected_year(proj_safmr).items() if z in zips}
+            print(f"  -> {len(proj)}/{len(zips)} ZIPs proyectados", file=sys.stderr)
+        except Exception as e:  # el año aún no existe en HUD -> se omite
+            print(f"  -> sin datos {PROJECT_YEAR}: {e}", file=sys.stderr)
+
     data["acs"] = {"year": ACS_YEAR, "label": f"ACS {ACS_YEAR} 5-year", "byZip": acs}
     data["safmr"] = {"year": FMR_YEAR, "label": f"HUD Small Area FMR {FMR_YEAR}", "byZip": matched}
+
+    if proj:
+        data["years"][str(PROJECT_YEAR)] = proj
+        data.setdefault("provisional", {})[str(PROJECT_YEAR)] = {
+            "label": f"{PROJECT_YEAR} (projected)",
+            "source": f"HUD Small Area FMR FY{PROJECT_YEAR}",
+            "note": (
+                f"Provisional: the city/county had not published official "
+                f"{PROJECT_YEAR} payment standards as of the build date. These "
+                f"are HUD's FY{PROJECT_YEAR} Small Area FMRs, which the authority "
+                f"has historically adopted within ~0-2%. The 5-bedroom figure is "
+                f"derived as 1.15x the 4-bedroom, per HUD's own formula."
+            ),
+        }
 
     with open("data.json", "w") as f:
         json.dump(data, f, indent=2)

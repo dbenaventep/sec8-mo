@@ -65,8 +65,25 @@
   .delta-down { color: var(--down); }
   .delta-zero { color: var(--muted); }
   .na { color: var(--muted); font-style: italic; }
-  /* Benchmark line inside a bedroom card */
+  /* Benchmark / history line inside a bedroom card */
   .card .fmr { color: var(--muted); font-size: .78rem; }
+  .card .hist { color: var(--muted); font-size: .8rem; }
+  .card .hist b { color: var(--text); font-weight: 600; }
+
+  /* Provisional badge + banner */
+  .new-wrap { display: flex; align-items: baseline; gap: .4rem; flex-wrap: wrap; }
+  .prov-badge {
+    font-size: .62rem; font-weight: 700; letter-spacing: .03em; text-transform: uppercase;
+    color: var(--warn); border: 1px solid color-mix(in srgb, var(--warn) 55%, transparent);
+    border-radius: 999px; padding: .08rem .4rem; white-space: nowrap;
+  }
+  .prov-banner {
+    background: color-mix(in srgb, var(--warn) 12%, var(--card));
+    border: 1px solid color-mix(in srgb, var(--warn) 45%, var(--line));
+    border-radius: 10px; padding: .8rem 1rem; margin: 0 0 1rem;
+    font-size: .85rem; color: var(--text);
+  }
+  .prov-banner b { color: var(--warn); }
 
   /* Section heading + source note */
   .sec-head { font-size: 1.05rem; font-weight: 700; margin: 2rem 0 .2rem; }
@@ -146,7 +163,7 @@
 <body>
 <div class="wrap">
   <h1>Payment Standards — Rent by ZIP code</h1>
-  <p class="sub">Section 8 (Housing Choice Voucher). Maximum rent by number of bedrooms, <strong>2025</strong> vs <strong>2026</strong>.</p>
+  <p class="sub">Section 8 (Housing Choice Voucher). Maximum rent by number of bedrooms — <strong>2025</strong>, <strong>2026</strong>, and a projected <strong>2027</strong>.</p>
 
   <div class="tabs" role="tablist">
     <button class="tab" id="tab-lookup" role="tab" aria-selected="true">Look up</button>
@@ -171,28 +188,48 @@
              placeholder="Add a ZIP code to compare" autocomplete="off">
       <button type="submit">Add</button>
     </form>
-    <p class="hint">Try: <code>63116</code> <code>63106</code> <code>63131</code> — ★ marks the highest 2026 rent in each row.</p>
+    <p class="hint">Try: <code>63116</code> <code>63106</code> <code>63131</code> — ★ marks the highest latest-year rent in each row.</p>
     <div class="chips" id="chips"></div>
     <div id="cout"></div>
   </section>
 
   <footer style="margin-top:2rem;color:var(--muted);font-size:.8rem">
-    Payment standards from the <em>2025 / 2026 Payment Standards</em> documents.
+    2025 / 2026 from the official Payment Standards documents.
+    2027 is provisional, projected from HUD's FY2027 Small Area FMRs
+    (the city/county schedule was not yet published).
     Neighborhood data: U.S. Census Bureau ACS 5-year (ZCTA).
-    Benchmark rents: HUD Small Area Fair Market Rents.
     All source code and data in this repository.
   </footer>
 </div>
 
 <script src="data.js"></script>
 <script>
-  const YEARS = Object.keys(PAYMENT_DATA.years).sort();
-  const [Y0, Y1] = YEARS;                       // Y0 = older (2025), Y1 = newer (2026)
+  const YEARS = Object.keys(PAYMENT_DATA.years).sort();   // e.g. 2025, 2026, 2027
+  const LATEST = YEARS[YEARS.length - 1];                 // headline year (2027)
+  const PROV = PAYMENT_DATA.provisional || {};            // provisional-year metadata
+  const isProv = y => !!PROV[y];
   const BEDROOMS = PAYMENT_DATA.bedrooms;
   const money = n => (n < 0 ? '-$' : '$') + Math.abs(n).toLocaleString('en-US');
 
   const rentsFor = (year, zip) => PAYMENT_DATA.years[year][zip] || null;
-  const known = zip => !!(rentsFor(Y0, zip) || rentsFor(Y1, zip));
+  const known = zip => YEARS.some(y => rentsFor(y, zip));
+
+  // Per bedroom size, the value in each year + which to headline and compare.
+  function series(zip, i) {
+    const pts = YEARS
+      .map(y => ({ year: y, val: (rentsFor(y, zip) || [])[i] ?? null }))
+      .filter(p => p.val != null);
+    const head = pts[pts.length - 1] || null;   // most recent year with a value
+    const prev = pts[pts.length - 2] || null;   // the one before, for the delta
+    return { pts, head, prev };
+  }
+
+  // Provisional banner shown once above results when the headline year is a projection.
+  function provBanner() {
+    const p = PROV[LATEST];
+    if (!p) return '';
+    return `<div class="prov-banner"><b>⚠ ${p.label}</b> — ${p.note}</div>`;
+  }
 
   // Shared change formatting -> {cls, text} or null when not comparable
   function change(va, vb) {
@@ -211,17 +248,15 @@
   const zipInput = document.getElementById('zip');
 
   const ACS = PAYMENT_DATA.acs || { byZip: {}, label: 'ACS' };
-  const SAFMR = PAYMENT_DATA.safmr || { byZip: {}, label: 'HUD SAFMR' };
   const nfmt = n => n.toLocaleString('en-US');
 
   // Meter: how far the voucher goes against the typical rent in that ZIP.
   // Status colors always ship with an icon + label, never color alone.
   function voucherMeter(zip) {
-    const std = rentsFor(Y1, zip);
+    const std = series(zip, 2).head;   // latest available 2-bedroom standard
     const acs = ACS.byZip[zip];
     if (!std || !acs || !acs.median_gross_rent) return '';
-    const TWO_BR = 2;
-    const ratio = std[TWO_BR] / acs.median_gross_rent;
+    const ratio = std.val / acs.median_gross_rent;
     const pct = Math.round(ratio * 100);
 
     let cls, icon, label;
@@ -237,7 +272,7 @@
           <div>
             <div class="meter-val">${pct}%</div>
             <div class="meter-sub">
-              2-bedroom standard ${money(std[TWO_BR])} vs. typical rent ${money(acs.median_gross_rent)} in this ZIP
+              ${std.year} 2-bedroom standard ${money(std.val)} vs. typical rent ${money(acs.median_gross_rent)} in this ZIP
             </div>
           </div>
           <div class="meter-state">${icon} ${label}</div>
@@ -283,29 +318,36 @@
   }
 
   function render(zip) {
-    const a = rentsFor(Y0, zip), b = rentsFor(Y1, zip);
-    if (!a && !b) {
-      out.innerHTML = `<div class="msg">ZIP code <strong>${zip}</strong> was not found in the ${Y0} or ${Y1} data.</div>`;
+    if (!known(zip)) {
+      out.innerHTML = `<div class="msg">ZIP code <strong>${zip}</strong> was not found in the ${YEARS.join(' / ')} data.</div>`;
       return;
     }
-    const fmr = SAFMR.byZip[zip];
     const cards = BEDROOMS.map((bed, i) => {
-      const va = a ? a[i] : null, vb = b ? b[i] : null;
-      const big = vb != null ? money(vb) : (va != null ? money(va) : '<span class="na">N/A</span>');
-      const c = change(va, vb);
-      // FMR only goes up to 4 bedrooms; there is no federal 5-bedroom figure.
-      const f = fmr && fmr[i] != null ? `<div class="fmr">Federal FMR: ${money(fmr[i])}</div>` : '';
+      const { pts, head, prev } = series(zip, i);
+      if (!head) {
+        return `<div class="card"><div class="bed">${bed}</div>
+          <div class="new"><span class="na">N/A</span></div></div>`;
+      }
+      const badge = isProv(head.year) ? `<span class="prov-badge">${head.year} proj.</span>` : '';
+      // History = every year before the headline, compact.
+      const hist = pts.slice(0, -1)
+        .map(p => `${p.year} <b>${money(p.val)}</b>`).join(' · ');
+      const c = change(prev ? prev.val : null, head.val);
+      const cLbl = prev ? ` <span style="color:var(--muted)">${prev.year}→${head.year}</span>` : '';
       return `<div class="card">
         <div class="bed">${bed}</div>
-        <div class="new">${big}</div>
-        <div class="old">${Y0}: ${va != null ? money(va) : 'N/A'}</div>
-        <div class="delta ${c ? c.cls : 'delta-zero'}">${c ? c.text : '—'}</div>
-        ${f}
+        <div class="new-wrap"><div class="new">${money(head.val)}</div>${badge}</div>
+        <div class="hist">${hist || '&nbsp;'}</div>
+        <div class="delta ${c ? c.cls : 'delta-zero'}">${c ? c.text + cLbl : '—'}</div>
       </div>`;
     }).join('');
 
+    const headLabel = isProv(LATEST)
+      ? `<span style="color:var(--warn)">${LATEST} (projected)</span>`
+      : `<span style="color:var(--accent)">${LATEST}</span>`;
     out.innerHTML = `
-      <div class="result-head">ZIP code ${zip} — <span style="color:var(--accent)">${Y1}</span> vs ${Y0}</div>
+      <div class="result-head">ZIP code ${zip} — ${headLabel}, with ${YEARS.slice(0, -1).join(' / ')} history</div>
+      ${provBanner()}
       ${voucherMeter(zip)}
       <div class="grid">${cards}</div>
       ${kpiRow(zip)}`;
@@ -349,22 +391,19 @@
     }
 
     const rows = BEDROOMS.map((bed, i) => {
-      // Value shown big per ZIP: newer year, falling back to older
-      const shown = selected.map(z => {
-        const a = rentsFor(Y0, z), b = rentsFor(Y1, z);
-        return { va: a ? a[i] : null, vb: b ? b[i] : null };
-      });
-      const displayed = shown.map(s => s.vb != null ? s.vb : s.va);
+      const shown = selected.map(z => series(z, i));
+      const displayed = shown.map(s => s.head ? s.head.val : null);
       const max = Math.max(...displayed.filter(v => v != null));
 
       const cells = shown.map((s, j) => {
         const v = displayed[j];
         if (v == null) return `<td><span class="na">N/A</span></td>`;
-        const c = change(s.va, s.vb);
+        const c = change(s.prev ? s.prev.val : null, s.head.val);
         const isBest = v === max && displayed.filter(x => x != null).length > 1;
+        const hist = s.pts.slice(0, -1).map(p => `${p.year} ${money(p.val)}`).join(' · ');
         return `<td class="${isBest ? 'best' : ''}">
           <div class="big">${money(v)}</div>
-          <div class="small">${Y0}: ${s.va != null ? money(s.va) : 'N/A'}</div>
+          <div class="small">${hist || '&nbsp;'}</div>
           <div class="chg ${c ? c.cls : 'delta-zero'}">${c ? c.text : '—'}</div>
         </td>`;
       }).join('');
@@ -372,8 +411,10 @@
       return `<tr><td>${bed}</td>${cells}</tr>`;
     }).join('');
 
+    const bigLabel = isProv(LATEST) ? `${LATEST} (projected)` : LATEST;
     cout.innerHTML = `
-      <div class="result-head">Comparing ${selected.length} ZIP code${selected.length > 1 ? 's' : ''} — big number is ${Y1}</div>
+      ${provBanner()}
+      <div class="result-head">Comparing ${selected.length} ZIP code${selected.length > 1 ? 's' : ''} — big number is ${bigLabel}, small is history</div>
       <div class="table-scroll"><table>
         <thead><tr><th>Bedrooms</th>${selected.map(z => `<th>${z}</th>`).join('')}</tr></thead>
         <tbody>${rows}</tbody>
@@ -383,7 +424,7 @@
   function addZip(zip) {
     if (!/^\d{5}$/.test(zip)) return 'Please enter a valid 5-digit ZIP code.';
     if (selected.includes(zip)) return `ZIP code ${zip} is already in the comparison.`;
-    if (!known(zip)) return `ZIP code ${zip} was not found in the ${Y0} or ${Y1} data.`;
+    if (!known(zip)) return `ZIP code ${zip} was not found in the ${YEARS.join(' / ')} data.`;
     selected.push(zip);
     return null;
   }

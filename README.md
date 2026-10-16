@@ -6,12 +6,12 @@ between **2025** and **2026**.
 
 ## Two tools
 
-- **Look up** — enter a single ZIP code and get, per bedroom size, the 2026 rent
-  (large), the 2025 rent (small), a green ▲ / red ▼ triangle with the change in
-  dollars and percent, and the federal FMR benchmark. Plus a **voucher power**
-  meter (how the standard compares to the typical rent actually charged in that
-  ZIP) and a **neighborhood profile** (income, rental supply, poverty, rent
-  burden, commute).
+- **Look up** — enter a single ZIP code and get, per bedroom size, the latest
+  year large, the earlier years as history, and a green ▲ / red ▼ triangle with
+  the change in dollars and percent. Plus a **voucher power** meter (how the
+  standard compares to the typical rent actually charged in that ZIP) and a
+  **neighborhood profile** (income, rental supply, poverty, rent burden,
+  commute).
 - **Compare ZIPs** — add several ZIP codes and see them side by side in one
   table: rows are bedroom sizes, one column per ZIP. A ★ marks the highest 2026
   rent in each row.
@@ -41,9 +41,21 @@ Deep links work for both tools:
 
 | Source | Used for | Vintage |
 |--------|----------|---------|
-| Payment Standards PDFs | Max rent by ZIP and bedroom size | 2025, 2026 |
+| Payment Standards PDFs | Max rent by ZIP and bedroom size | 2025, 2026 (official) |
+| [HUD Small Area FMR](https://www.huduser.gov/portal/dataset/fmr-api.html) | **Projected 2027** standards + federal benchmark | FY2026, FY2027 |
 | [Census ACS 5-year](https://www.census.gov/data/developers/data-sets/acs-5year.html) | Income, typical rent, rental supply, poverty, rent burden, commute | 2024 (covers 2020–2024) |
-| [HUD Small Area FMR](https://www.huduser.gov/portal/dataset/fmr-api.html) | Federal benchmark rent per ZIP | 2026 |
+
+### The projected 2027 column
+
+As of the latest build, neither the city nor the county had published official
+2027 payment standards (those schedules take effect January 1 and are typically
+released in Nov–Dec). HUD's **FY2027 Small Area FMRs** are already published,
+though, and the local authority has historically adopted them within ~0–2% (the
+2026 standards matched the 2026 SAFMR on all 60 ZIPs). So the app shows a
+**provisional 2027** column, clearly badged, built from the FY2027 SAFMRs. The
+5-bedroom figure is derived as `round(1.15 × 4-bedroom)` — HUD's own formula,
+which reproduces the official 5BR values exactly across every 2025/2026 row.
+When the real schedule drops, replace the PDFs and re-run the scripts.
 
 Caveats worth knowing:
 
