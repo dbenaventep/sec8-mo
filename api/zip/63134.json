@@ -1,0 +1,60 @@
+{
+  "zip": "63134",
+  "bedrooms": [
+    "Efficiency",
+    "1 Bedroom",
+    "2 Bedroom",
+    "3 Bedroom",
+    "4 Bedroom",
+    "5 Bedroom"
+  ],
+  "payment_standards": {
+    "2025": {
+      "Efficiency": 1020,
+      "1 Bedroom": 1050,
+      "2 Bedroom": 1300,
+      "3 Bedroom": 1680,
+      "4 Bedroom": 1930,
+      "5 Bedroom": 2220
+    },
+    "2026": {
+      "Efficiency": 1000,
+      "1 Bedroom": 1050,
+      "2 Bedroom": 1280,
+      "3 Bedroom": 1650,
+      "4 Bedroom": 1900,
+      "5 Bedroom": 2185
+    },
+    "2027": {
+      "Efficiency": 1080,
+      "1 Bedroom": 1120,
+      "2 Bedroom": 1370,
+      "3 Bedroom": 1760,
+      "4 Bedroom": 2030,
+      "5 Bedroom": 2334
+    }
+  },
+  "provisional_years": {
+    "2027": {
+      "label": "2027 (projected)",
+      "source": "HUD Small Area FMR FY2027",
+      "note": "Provisional: the city/county had not published official 2027 payment standards as of the build date. These are HUD's FY2027 Small Area FMRs, which the authority has historically adopted within ~0-2%. The 5-bedroom figure is derived as 1.15x the 4-bedroom, per HUD's own formula."
+    }
+  },
+  "neighborhood": {
+    "population": 13059,
+    "median_income": 44680,
+    "median_gross_rent": 1138,
+    "renter_pct": 45.5,
+    "poverty_pct": 31.4,
+    "mean_commute_min": 21.2,
+    "rent_burdened_pct": 57.2
+  },
+  "sources": {
+    "payment_standards_2025_2026": "Local housing authority Payment Standards PDFs",
+    "payment_standards_2027": "HUD Small Area FMR FY2027",
+    "neighborhood": "ACS 2024 5-year"
+  },
+  "generated": "2026-11-02",
+  "disclaimer": "Unofficial. Payment standards for 2025/2026 are transcribed from the published Payment Standards PDFs; 2027 is provisional (projected from HUD FY2027 Small Area FMRs). Verify against the housing authority before relying on these figures."
+}

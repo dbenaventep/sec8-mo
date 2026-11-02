@@ -47,6 +47,12 @@
   .msg { background: var(--card); border: 1px solid var(--line); border-radius: 10px;
     padding: 1.2rem; color: var(--muted); }
   .result-head { font-size: 1.2rem; font-weight: 700; margin: .5rem 0 1rem; }
+  .json-link {
+    font-size: .75rem; font-weight: 600; margin-left: .5rem; white-space: nowrap;
+    color: var(--accent); text-decoration: none; border: 1px solid var(--line);
+    border-radius: 6px; padding: .12rem .45rem; font-family: ui-monospace, monospace;
+  }
+  .json-link:hover { border-color: var(--accent); }
 
   /* Single lookup cards */
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: .8rem; }
@@ -199,6 +205,8 @@
     (the city/county schedule was not yet published).
     Neighborhood data: U.S. Census Bureau ACS 5-year (ZCTA).
     All source code and data in this repository.
+    <br>JSON API: <a href="api/zip/63116.json" target="_blank" rel="noopener"><code>api/zip/&lt;zip&gt;.json</code></a>
+    · <a href="api/index.json" target="_blank" rel="noopener">index</a>
   </footer>
 </div>
 
@@ -346,7 +354,9 @@
       ? `<span style="color:var(--warn)">${LATEST} (projected)</span>`
       : `<span style="color:var(--accent)">${LATEST}</span>`;
     out.innerHTML = `
-      <div class="result-head">ZIP code ${zip} — ${headLabel}, with ${YEARS.slice(0, -1).join(' / ')} history</div>
+      <div class="result-head">ZIP code ${zip} — ${headLabel}, with ${YEARS.slice(0, -1).join(' / ')} history
+        <a class="json-link" href="api/zip/${zip}.json" target="_blank" rel="noopener">{ } JSON</a>
+      </div>
       ${provBanner()}
       ${voucherMeter(zip)}
       <div class="grid">${cards}</div>

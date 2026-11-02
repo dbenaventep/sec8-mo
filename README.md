@@ -34,8 +34,36 @@ Deep links work for both tools:
 | `index.html` | The whole app (HTML + CSS + vanilla JS, no build step). |
 | `data.js` / `data.json` | Generated data: rents by ZIP + ACS and FMR context. |
 | `parse.py` | Extracts the payment standards from the source PDFs. |
-| `enrich.py` | Adds Census ACS and HUD SAFMR context to the data. |
+| `enrich.py` | Adds Census ACS and HUD SAFMR context, plus the projected 2027. |
+| `build_api.py` | Generates the static JSON API under `api/`. |
+| `api/` | Generated static JSON API (one file per ZIP + indexes). |
 | `2025-Payment-Standards.pdf`, `2026-Payment-Standards.pdf` | Source documents. |
+
+## JSON API (static)
+
+GitHub Pages is static, so there is no server — instead the build emits one JSON
+file per ZIP. GitHub Pages sends `Access-Control-Allow-Origin: *`, so you can
+`fetch` these from anywhere.
+
+| Endpoint | Returns |
+|----------|---------|
+| `api/zip/<zip>.json` | One ZIP: payment standards (2025/2026/2027) + neighborhood |
+| `api/index.json` | Metadata, available years, full ZIP list, URL template |
+| `api/all.json` | Every ZIP in a single file |
+
+```bash
+curl https://dbenaventep.github.io/sec8-mo/api/zip/63116.json
+```
+
+```js
+const r = await fetch('https://dbenaventep.github.io/sec8-mo/api/zip/63116.json');
+const { payment_standards } = await r.json();
+console.log(payment_standards['2027']['2 Bedroom']); // 1310
+```
+
+Payment standards are keyed by bedroom label; a year is omitted for a ZIP that
+has no data that year. `2027` is provisional — see `provisional_years` in the
+payload.
 
 ## Data sources
 
@@ -88,7 +116,15 @@ EOF
 python3 enrich.py
 ```
 
-Both scripts rewrite `data.json` and `data.js`.
+The full build order is:
+
+```bash
+python3 parse.py && python3 enrich.py && python3 build_api.py
+```
+
+`parse.py` / `enrich.py` rewrite `data.json` and `data.js`; `build_api.py`
+regenerates `api/`. **Always re-run `build_api.py` after any data change** and
+commit the `api/` folder, or the JSON API will serve stale figures.
 
 ## Enabling GitHub Pages
 
