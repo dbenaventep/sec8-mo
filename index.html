@@ -91,6 +91,11 @@
   }
   .prov-banner b { color: var(--warn); }
 
+  /* Authority label */
+  .auth { color: var(--muted); font-size: .85rem; margin: -.4rem 0 1rem; }
+  .th-auth { color: var(--muted); font-size: .68rem; font-weight: 500;
+    text-transform: none; letter-spacing: 0; margin-top: .15rem; }
+
   /* Section heading + source note */
   .sec-head { font-size: 1.05rem; font-weight: 700; margin: 2rem 0 .2rem; }
   .sec-note { color: var(--muted); font-size: .8rem; margin: 0 0 .9rem; }
@@ -169,7 +174,7 @@
 <body>
 <div class="wrap">
   <h1>Payment Standards — Rent by ZIP code</h1>
-  <p class="sub">Section 8 (Housing Choice Voucher). Maximum rent by number of bedrooms — <strong>2025</strong>, <strong>2026</strong>, and a projected <strong>2027</strong>.</p>
+  <p class="sub">Section 8 (Housing Choice Voucher) maximum rent by bedroom size. Covers <strong>St. Louis city/county</strong> (SLHA) and <strong>St. Charles County</strong> (NECAC). Shows 2025, 2026, and a projected 2027 where available.</p>
 
   <div class="tabs" role="tablist">
     <button class="tab" id="tab-lookup" role="tab" aria-selected="true">Look up</button>
@@ -183,7 +188,7 @@
              placeholder="Enter a ZIP code (e.g. 63074)" autocomplete="off">
       <button type="submit">Look up</button>
     </form>
-    <p class="hint">Examples: <code>63074</code> <code>63106</code> <code>63116</code> <code>63131</code></p>
+    <p class="hint">Examples: <code>63116</code> <code>63106</code> <code>63131</code> St. Louis · <code>63301</code> <code>63368</code> St. Charles</p>
     <div id="out"></div>
   </section>
 
@@ -194,15 +199,16 @@
              placeholder="Add a ZIP code to compare" autocomplete="off">
       <button type="submit">Add</button>
     </form>
-    <p class="hint">Try: <code>63116</code> <code>63106</code> <code>63131</code> — ★ marks the highest latest-year rent in each row.</p>
+    <p class="hint">Try: <code>63116</code> <code>63106</code> <code>63301</code> — ★ marks the highest latest-year rent in each row.</p>
     <div class="chips" id="chips"></div>
     <div id="cout"></div>
   </section>
 
   <footer style="margin-top:2rem;color:var(--muted);font-size:.8rem">
-    2025 / 2026 from the official Payment Standards documents.
-    2027 is provisional, projected from HUD's FY2027 Small Area FMRs
-    (the city/county schedule was not yet published).
+    SLHA (St. Louis city/county) standards for 2025/2026, and St. Charles County
+    (NECAC) for 2026, from each authority's official Payment Standards documents.
+    The projected 2027 applies only to SLHA (which adopts HUD SAFMR ~1:1);
+    St. Charles sets standards differently, so no 2027 is projected for it.
     Neighborhood data: U.S. Census Bureau ACS 5-year (ZCTA).
     All source code and data in this repository.
     <br>JSON API: <a href="api/zip/63116.json" target="_blank" rel="noopener"><code>api/zip/&lt;zip&gt;.json</code></a>
@@ -219,8 +225,19 @@
   const BEDROOMS = PAYMENT_DATA.bedrooms;
   const money = n => (n < 0 ? '-$' : '$') + Math.abs(n).toLocaleString('en-US');
 
+  const META = PAYMENT_DATA.zipMeta || {};
   const rentsFor = (year, zip) => PAYMENT_DATA.years[year][zip] || null;
   const known = zip => YEARS.some(y => rentsFor(y, zip));
+  const yearsFor = zip => YEARS.filter(y => rentsFor(y, zip));   // years this ZIP has
+  const latestFor = zip => { const ys = yearsFor(zip); return ys[ys.length - 1]; };
+
+  // Which authority governs this ZIP (SLHA vs St. Charles County PHA).
+  function authorityLine(zip) {
+    const m = META[zip];
+    if (!m) return '';
+    const city = m.city ? ` · ${m.city}` : '';
+    return `<div class="auth">Authority: ${m.authority}${city}</div>`;
+  }
 
   // Per bedroom size, the value in each year + which to headline and compare.
   function series(zip, i) {
@@ -232,9 +249,9 @@
     return { pts, head, prev };
   }
 
-  // Provisional banner shown once above results when the headline year is a projection.
-  function provBanner() {
-    const p = PROV[LATEST];
+  // Provisional banner, shown only when the given headline year is a projection.
+  function provBanner(year) {
+    const p = PROV[year];
     if (!p) return '';
     return `<div class="prov-banner"><b>⚠ ${p.label}</b> — ${p.note}</div>`;
   }
@@ -350,14 +367,18 @@
       </div>`;
     }).join('');
 
-    const headLabel = isProv(LATEST)
-      ? `<span style="color:var(--warn)">${LATEST} (projected)</span>`
-      : `<span style="color:var(--accent)">${LATEST}</span>`;
+    const latest = latestFor(zip);               // this ZIP's own most recent year
+    const hist = yearsFor(zip).slice(0, -1);
+    const headLabel = isProv(latest)
+      ? `<span style="color:var(--warn)">${latest} (projected)</span>`
+      : `<span style="color:var(--accent)">${latest}</span>`;
+    const histText = hist.length ? `, with ${hist.join(' / ')} history` : '';
     out.innerHTML = `
-      <div class="result-head">ZIP code ${zip} — ${headLabel}, with ${YEARS.slice(0, -1).join(' / ')} history
+      <div class="result-head">ZIP code ${zip} — ${headLabel}${histText}
         <a class="json-link" href="api/zip/${zip}.json" target="_blank" rel="noopener">{ } JSON</a>
       </div>
-      ${provBanner()}
+      ${authorityLine(zip)}
+      ${provBanner(latest)}
       ${voucherMeter(zip)}
       <div class="grid">${cards}</div>
       ${kpiRow(zip)}`;
@@ -421,12 +442,17 @@
       return `<tr><td>${bed}</td>${cells}</tr>`;
     }).join('');
 
-    const bigLabel = isProv(LATEST) ? `${LATEST} (projected)` : LATEST;
+    const anyProv = selected.some(z => isProv(latestFor(z)));
+    const headCells = selected.map(z => {
+      const m = META[z];
+      const sub = `${m ? m.authorityShort : ''} · ${latestFor(z)}`;
+      return `<th>${z}<div class="th-auth">${sub}</div></th>`;
+    }).join('');
     cout.innerHTML = `
-      ${provBanner()}
-      <div class="result-head">Comparing ${selected.length} ZIP code${selected.length > 1 ? 's' : ''} — big number is ${bigLabel}, small is history</div>
+      ${anyProv ? provBanner(LATEST) : ''}
+      <div class="result-head">Comparing ${selected.length} ZIP code${selected.length > 1 ? 's' : ''} — big number is each ZIP's latest year, small is history</div>
       <div class="table-scroll"><table>
-        <thead><tr><th>Bedrooms</th>${selected.map(z => `<th>${z}</th>`).join('')}</tr></thead>
+        <thead><tr><th>Bedrooms</th>${headCells}</tr></thead>
         <tbody>${rows}</tbody>
       </table></div>`;
   }

@@ -37,7 +37,8 @@ Deep links work for both tools:
 | `enrich.py` | Adds Census ACS and HUD SAFMR context, plus the projected 2027. |
 | `build_api.py` | Generates the static JSON API under `api/`. |
 | `api/` | Generated static JSON API (one file per ZIP + indexes). |
-| `2025-Payment-Standards.pdf`, `2026-Payment-Standards.pdf` | Source documents. |
+| `2025/2026-Payment-Standards.pdf` | SLHA (St. Louis) source documents. |
+| `2026-St-Charles-Payment-Standards.pdf` | St. Charles County (NECAC) source. |
 
 ## JSON API (static)
 
@@ -69,9 +70,22 @@ payload.
 
 | Source | Used for | Vintage |
 |--------|----------|---------|
-| Payment Standards PDFs | Max rent by ZIP and bedroom size | 2025, 2026 (official) |
-| [HUD Small Area FMR](https://www.huduser.gov/portal/dataset/fmr-api.html) | **Projected 2027** standards + federal benchmark | FY2026, FY2027 |
+| SLHA Payment Standards PDFs | St. Louis city/county rent by ZIP | 2025, 2026 (official) |
+| [St. Charles County PHA / NECAC PDF](https://necac.org/images/pdfs/housing/sccpha-payment-standards-2026.pdf) | St. Charles County rent by ZIP | 2026 (official, eff. Jul 1) |
+| [HUD Small Area FMR](https://www.huduser.gov/portal/dataset/fmr-api.html) | **Projected 2027** (SLHA only) + federal benchmark | FY2026, FY2027 |
 | [Census ACS 5-year](https://www.census.gov/data/developers/data-sets/acs-5year.html) | Income, typical rent, rental supply, poverty, rent burden, commute | 2024 (covers 2020–2024) |
+
+### Two authorities
+
+The app covers two separate housing authorities, tagged per ZIP in `zipMeta`:
+
+- **St. Louis city/county — SLHA.** Adopts HUD's Small Area FMR ~1:1 (the 2026
+  standards matched FY2026 SAFMR on all ZIPs), so a provisional **2027** is
+  projected from FY2027 SAFMR.
+- **St. Charles County — NECAC.** Sets standards differently (2026 ran ~116% of
+  SAFMR) on a July 1 cycle, so **no 2027 is projected** for it — those ZIPs show
+  2026 only. 9 ZIPs: St. Charles, St. Peters, O'Fallon, Wentzville, Lake St.
+  Louis, Foristell.
 
 ### The projected 2027 column
 

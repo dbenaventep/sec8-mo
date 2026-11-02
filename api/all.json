@@ -1,9 +1,11 @@
 {
   "generated": "2026-11-02",
-  "count": 60,
+  "count": 69,
   "zips": {
     "63005": {
       "zip": "63005",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -56,6 +58,8 @@
     },
     "63011": {
       "zip": "63011",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -116,6 +120,8 @@
     },
     "63017": {
       "zip": "63017",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -176,6 +182,8 @@
     },
     "63021": {
       "zip": "63021",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -236,6 +244,8 @@
     },
     "63025": {
       "zip": "63025",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -296,6 +306,8 @@
     },
     "63026": {
       "zip": "63026",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -356,6 +368,8 @@
     },
     "63031": {
       "zip": "63031",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -416,6 +430,8 @@
     },
     "63033": {
       "zip": "63033",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -476,6 +492,8 @@
     },
     "63034": {
       "zip": "63034",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -536,6 +554,8 @@
     },
     "63040": {
       "zip": "63040",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -596,6 +616,8 @@
     },
     "63042": {
       "zip": "63042",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -656,6 +678,8 @@
     },
     "63043": {
       "zip": "63043",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -716,6 +740,8 @@
     },
     "63044": {
       "zip": "63044",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -776,6 +802,8 @@
     },
     "63074": {
       "zip": "63074",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -836,6 +864,8 @@
     },
     "63088": {
       "zip": "63088",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -896,6 +926,8 @@
     },
     "63101": {
       "zip": "63101",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -956,6 +988,8 @@
     },
     "63102": {
       "zip": "63102",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -1016,6 +1050,8 @@
     },
     "63103": {
       "zip": "63103",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -1076,6 +1112,8 @@
     },
     "63104": {
       "zip": "63104",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -1136,6 +1174,8 @@
     },
     "63105": {
       "zip": "63105",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -1188,6 +1228,8 @@
     },
     "63106": {
       "zip": "63106",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -1248,6 +1290,8 @@
     },
     "63107": {
       "zip": "63107",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -1308,6 +1352,8 @@
     },
     "63108": {
       "zip": "63108",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -1368,6 +1414,8 @@
     },
     "63109": {
       "zip": "63109",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -1428,6 +1476,8 @@
     },
     "63110": {
       "zip": "63110",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -1488,6 +1538,8 @@
     },
     "63111": {
       "zip": "63111",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -1548,6 +1600,8 @@
     },
     "63112": {
       "zip": "63112",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -1608,6 +1662,8 @@
     },
     "63113": {
       "zip": "63113",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -1668,6 +1724,8 @@
     },
     "63114": {
       "zip": "63114",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -1728,6 +1786,8 @@
     },
     "63115": {
       "zip": "63115",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -1788,6 +1848,8 @@
     },
     "63116": {
       "zip": "63116",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -1848,6 +1910,8 @@
     },
     "63117": {
       "zip": "63117",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -1908,6 +1972,8 @@
     },
     "63118": {
       "zip": "63118",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -1968,6 +2034,8 @@
     },
     "63119": {
       "zip": "63119",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -2028,6 +2096,8 @@
     },
     "63120": {
       "zip": "63120",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -2088,6 +2158,8 @@
     },
     "63121": {
       "zip": "63121",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -2148,6 +2220,8 @@
     },
     "63122": {
       "zip": "63122",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -2208,6 +2282,8 @@
     },
     "63123": {
       "zip": "63123",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -2268,6 +2344,8 @@
     },
     "63124": {
       "zip": "63124",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -2328,6 +2406,8 @@
     },
     "63125": {
       "zip": "63125",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -2388,6 +2468,8 @@
     },
     "63126": {
       "zip": "63126",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -2448,6 +2530,8 @@
     },
     "63127": {
       "zip": "63127",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -2508,6 +2592,8 @@
     },
     "63128": {
       "zip": "63128",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -2560,6 +2646,8 @@
     },
     "63129": {
       "zip": "63129",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -2620,6 +2708,8 @@
     },
     "63130": {
       "zip": "63130",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -2680,6 +2770,8 @@
     },
     "63131": {
       "zip": "63131",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -2732,6 +2824,8 @@
     },
     "63132": {
       "zip": "63132",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -2792,6 +2886,8 @@
     },
     "63133": {
       "zip": "63133",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -2852,6 +2948,8 @@
     },
     "63134": {
       "zip": "63134",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -2912,6 +3010,8 @@
     },
     "63135": {
       "zip": "63135",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -2972,6 +3072,8 @@
     },
     "63136": {
       "zip": "63136",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -3032,6 +3134,8 @@
     },
     "63137": {
       "zip": "63137",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -3092,6 +3196,8 @@
     },
     "63138": {
       "zip": "63138",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -3152,6 +3258,8 @@
     },
     "63139": {
       "zip": "63139",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -3212,6 +3320,8 @@
     },
     "63140": {
       "zip": "63140",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -3272,6 +3382,8 @@
     },
     "63141": {
       "zip": "63141",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -3324,6 +3436,8 @@
     },
     "63143": {
       "zip": "63143",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -3384,6 +3498,8 @@
     },
     "63144": {
       "zip": "63144",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -3444,6 +3560,8 @@
     },
     "63146": {
       "zip": "63146",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -3504,6 +3622,8 @@
     },
     "63147": {
       "zip": "63147",
+      "city": null,
+      "authority": "City of St. Louis Housing Authority (SLHA)",
       "bedrooms": [
         "Efficiency",
         "1 Bedroom",
@@ -3553,6 +3673,366 @@
         "poverty_pct": 33.3,
         "mean_commute_min": 30.5,
         "rent_burdened_pct": 51.4
+      },
+      "sources": {
+        "payment_standards_2025_2026": "Local housing authority Payment Standards PDFs",
+        "payment_standards_2027": "HUD Small Area FMR FY2027",
+        "neighborhood": "ACS 2024 5-year"
+      },
+      "generated": "2026-11-02",
+      "disclaimer": "Unofficial. Payment standards for 2025/2026 are transcribed from the published Payment Standards PDFs; 2027 is provisional (projected from HUD FY2027 Small Area FMRs). Verify against the housing authority before relying on these figures."
+    },
+    "63301": {
+      "zip": "63301",
+      "city": "St. Charles",
+      "authority": "St. Charles County PHA (NECAC)",
+      "bedrooms": [
+        "Efficiency",
+        "1 Bedroom",
+        "2 Bedroom",
+        "3 Bedroom",
+        "4 Bedroom",
+        "5 Bedroom"
+      ],
+      "payment_standards": {
+        "2026": {
+          "Efficiency": 1114,
+          "1 Bedroom": 1160,
+          "2 Bedroom": 1415,
+          "3 Bedroom": 1837,
+          "4 Bedroom": 2100,
+          "5 Bedroom": 2435
+        }
+      },
+      "provisional_years": {},
+      "neighborhood": {
+        "population": 52667,
+        "median_income": 85308,
+        "median_gross_rent": 1154,
+        "renter_pct": 28.2,
+        "poverty_pct": 7.8,
+        "mean_commute_min": 21.9,
+        "rent_burdened_pct": 39.7
+      },
+      "sources": {
+        "payment_standards_2025_2026": "Local housing authority Payment Standards PDFs",
+        "payment_standards_2027": "HUD Small Area FMR FY2027",
+        "neighborhood": "ACS 2024 5-year"
+      },
+      "generated": "2026-11-02",
+      "disclaimer": "Unofficial. Payment standards for 2025/2026 are transcribed from the published Payment Standards PDFs; 2027 is provisional (projected from HUD FY2027 Small Area FMRs). Verify against the housing authority before relying on these figures."
+    },
+    "63303": {
+      "zip": "63303",
+      "city": "St. Charles",
+      "authority": "St. Charles County PHA (NECAC)",
+      "bedrooms": [
+        "Efficiency",
+        "1 Bedroom",
+        "2 Bedroom",
+        "3 Bedroom",
+        "4 Bedroom",
+        "5 Bedroom"
+      ],
+      "payment_standards": {
+        "2026": {
+          "Efficiency": 1357,
+          "1 Bedroom": 1403,
+          "2 Bedroom": 1728,
+          "3 Bedroom": 2208,
+          "4 Bedroom": 2553,
+          "5 Bedroom": 2936
+        }
+      },
+      "provisional_years": {},
+      "neighborhood": {
+        "population": 46089,
+        "median_income": 99138,
+        "median_gross_rent": 1374,
+        "renter_pct": 25.9,
+        "poverty_pct": 5.3,
+        "mean_commute_min": 21.9,
+        "rent_burdened_pct": 34.0
+      },
+      "sources": {
+        "payment_standards_2025_2026": "Local housing authority Payment Standards PDFs",
+        "payment_standards_2027": "HUD Small Area FMR FY2027",
+        "neighborhood": "ACS 2024 5-year"
+      },
+      "generated": "2026-11-02",
+      "disclaimer": "Unofficial. Payment standards for 2025/2026 are transcribed from the published Payment Standards PDFs; 2027 is provisional (projected from HUD FY2027 Small Area FMRs). Verify against the housing authority before relying on these figures."
+    },
+    "63304": {
+      "zip": "63304",
+      "city": "St. Charles",
+      "authority": "St. Charles County PHA (NECAC)",
+      "bedrooms": [
+        "Efficiency",
+        "1 Bedroom",
+        "2 Bedroom",
+        "3 Bedroom",
+        "4 Bedroom",
+        "5 Bedroom"
+      ],
+      "payment_standards": {
+        "2026": {
+          "Efficiency": 1564,
+          "1 Bedroom": 1622,
+          "2 Bedroom": 2007,
+          "3 Bedroom": 2587,
+          "4 Bedroom": 2981,
+          "5 Bedroom": 3428
+        }
+      },
+      "provisional_years": {},
+      "neighborhood": {
+        "population": 43195,
+        "median_income": 114442,
+        "median_gross_rent": 1749,
+        "renter_pct": 12.3,
+        "poverty_pct": 3.5,
+        "mean_commute_min": 24.4,
+        "rent_burdened_pct": 54.1
+      },
+      "sources": {
+        "payment_standards_2025_2026": "Local housing authority Payment Standards PDFs",
+        "payment_standards_2027": "HUD Small Area FMR FY2027",
+        "neighborhood": "ACS 2024 5-year"
+      },
+      "generated": "2026-11-02",
+      "disclaimer": "Unofficial. Payment standards for 2025/2026 are transcribed from the published Payment Standards PDFs; 2027 is provisional (projected from HUD FY2027 Small Area FMRs). Verify against the housing authority before relying on these figures."
+    },
+    "63348": {
+      "zip": "63348",
+      "city": "Foristell",
+      "authority": "St. Charles County PHA (NECAC)",
+      "bedrooms": [
+        "Efficiency",
+        "1 Bedroom",
+        "2 Bedroom",
+        "3 Bedroom",
+        "4 Bedroom",
+        "5 Bedroom"
+      ],
+      "payment_standards": {
+        "2026": {
+          "Efficiency": 1576,
+          "1 Bedroom": 1645,
+          "2 Bedroom": 2013,
+          "3 Bedroom": 2588,
+          "4 Bedroom": 2990,
+          "5 Bedroom": 3439
+        }
+      },
+      "provisional_years": {},
+      "neighborhood": {
+        "population": 10394,
+        "median_income": 115661,
+        "median_gross_rent": 1503,
+        "renter_pct": 10.9,
+        "poverty_pct": 2.0,
+        "mean_commute_min": 30.8,
+        "rent_burdened_pct": 19.8
+      },
+      "sources": {
+        "payment_standards_2025_2026": "Local housing authority Payment Standards PDFs",
+        "payment_standards_2027": "HUD Small Area FMR FY2027",
+        "neighborhood": "ACS 2024 5-year"
+      },
+      "generated": "2026-11-02",
+      "disclaimer": "Unofficial. Payment standards for 2025/2026 are transcribed from the published Payment Standards PDFs; 2027 is provisional (projected from HUD FY2027 Small Area FMRs). Verify against the housing authority before relying on these figures."
+    },
+    "63366": {
+      "zip": "63366",
+      "city": "O'Fallon",
+      "authority": "St. Charles County PHA (NECAC)",
+      "bedrooms": [
+        "Efficiency",
+        "1 Bedroom",
+        "2 Bedroom",
+        "3 Bedroom",
+        "4 Bedroom",
+        "5 Bedroom"
+      ],
+      "payment_standards": {
+        "2026": {
+          "Efficiency": 1254,
+          "1 Bedroom": 1311,
+          "2 Bedroom": 1599,
+          "3 Bedroom": 2059,
+          "4 Bedroom": 2381,
+          "5 Bedroom": 2738
+        }
+      },
+      "provisional_years": {},
+      "neighborhood": {
+        "population": 54769,
+        "median_income": 100621,
+        "median_gross_rent": 1302,
+        "renter_pct": 17.9,
+        "poverty_pct": 7.0,
+        "mean_commute_min": 24.9,
+        "rent_burdened_pct": 43.2
+      },
+      "sources": {
+        "payment_standards_2025_2026": "Local housing authority Payment Standards PDFs",
+        "payment_standards_2027": "HUD Small Area FMR FY2027",
+        "neighborhood": "ACS 2024 5-year"
+      },
+      "generated": "2026-11-02",
+      "disclaimer": "Unofficial. Payment standards for 2025/2026 are transcribed from the published Payment Standards PDFs; 2027 is provisional (projected from HUD FY2027 Small Area FMRs). Verify against the housing authority before relying on these figures."
+    },
+    "63367": {
+      "zip": "63367",
+      "city": "Lake St. Louis",
+      "authority": "St. Charles County PHA (NECAC)",
+      "bedrooms": [
+        "Efficiency",
+        "1 Bedroom",
+        "2 Bedroom",
+        "3 Bedroom",
+        "4 Bedroom",
+        "5 Bedroom"
+      ],
+      "payment_standards": {
+        "2026": {
+          "Efficiency": 1415,
+          "1 Bedroom": 1472,
+          "2 Bedroom": 1806,
+          "3 Bedroom": 2343,
+          "4 Bedroom": 2691,
+          "5 Bedroom": 3095
+        }
+      },
+      "provisional_years": {},
+      "neighborhood": {
+        "population": 29725,
+        "median_income": 137648,
+        "median_gross_rent": 1634,
+        "renter_pct": 18.5,
+        "poverty_pct": 3.2,
+        "mean_commute_min": 26.1,
+        "rent_burdened_pct": 26.6
+      },
+      "sources": {
+        "payment_standards_2025_2026": "Local housing authority Payment Standards PDFs",
+        "payment_standards_2027": "HUD Small Area FMR FY2027",
+        "neighborhood": "ACS 2024 5-year"
+      },
+      "generated": "2026-11-02",
+      "disclaimer": "Unofficial. Payment standards for 2025/2026 are transcribed from the published Payment Standards PDFs; 2027 is provisional (projected from HUD FY2027 Small Area FMRs). Verify against the housing authority before relying on these figures."
+    },
+    "63368": {
+      "zip": "63368",
+      "city": "O'Fallon",
+      "authority": "St. Charles County PHA (NECAC)",
+      "bedrooms": [
+        "Efficiency",
+        "1 Bedroom",
+        "2 Bedroom",
+        "3 Bedroom",
+        "4 Bedroom",
+        "5 Bedroom"
+      ],
+      "payment_standards": {
+        "2026": {
+          "Efficiency": 1518,
+          "1 Bedroom": 1576,
+          "2 Bedroom": 1932,
+          "3 Bedroom": 2484,
+          "4 Bedroom": 2875,
+          "5 Bedroom": 3306
+        }
+      },
+      "provisional_years": {},
+      "neighborhood": {
+        "population": 46966,
+        "median_income": 124297,
+        "median_gross_rent": 1482,
+        "renter_pct": 18.0,
+        "poverty_pct": 3.8,
+        "mean_commute_min": 24.7,
+        "rent_burdened_pct": 35.4
+      },
+      "sources": {
+        "payment_standards_2025_2026": "Local housing authority Payment Standards PDFs",
+        "payment_standards_2027": "HUD Small Area FMR FY2027",
+        "neighborhood": "ACS 2024 5-year"
+      },
+      "generated": "2026-11-02",
+      "disclaimer": "Unofficial. Payment standards for 2025/2026 are transcribed from the published Payment Standards PDFs; 2027 is provisional (projected from HUD FY2027 Small Area FMRs). Verify against the housing authority before relying on these figures."
+    },
+    "63376": {
+      "zip": "63376",
+      "city": "St. Peters",
+      "authority": "St. Charles County PHA (NECAC)",
+      "bedrooms": [
+        "Efficiency",
+        "1 Bedroom",
+        "2 Bedroom",
+        "3 Bedroom",
+        "4 Bedroom",
+        "5 Bedroom"
+      ],
+      "payment_standards": {
+        "2026": {
+          "Efficiency": 1219,
+          "1 Bedroom": 1265,
+          "2 Bedroom": 1553,
+          "3 Bedroom": 2001,
+          "4 Bedroom": 2312,
+          "5 Bedroom": 2658
+        }
+      },
+      "provisional_years": {},
+      "neighborhood": {
+        "population": 74962,
+        "median_income": 96393,
+        "median_gross_rent": 1349,
+        "renter_pct": 18.7,
+        "poverty_pct": 4.7,
+        "mean_commute_min": 23.2,
+        "rent_burdened_pct": 40.8
+      },
+      "sources": {
+        "payment_standards_2025_2026": "Local housing authority Payment Standards PDFs",
+        "payment_standards_2027": "HUD Small Area FMR FY2027",
+        "neighborhood": "ACS 2024 5-year"
+      },
+      "generated": "2026-11-02",
+      "disclaimer": "Unofficial. Payment standards for 2025/2026 are transcribed from the published Payment Standards PDFs; 2027 is provisional (projected from HUD FY2027 Small Area FMRs). Verify against the housing authority before relying on these figures."
+    },
+    "63385": {
+      "zip": "63385",
+      "city": "Wentzville",
+      "authority": "St. Charles County PHA (NECAC)",
+      "bedrooms": [
+        "Efficiency",
+        "1 Bedroom",
+        "2 Bedroom",
+        "3 Bedroom",
+        "4 Bedroom",
+        "5 Bedroom"
+      ],
+      "payment_standards": {
+        "2026": {
+          "Efficiency": 1242,
+          "1 Bedroom": 1300,
+          "2 Bedroom": 1587,
+          "3 Bedroom": 2047,
+          "4 Bedroom": 2358,
+          "5 Bedroom": 2711
+        }
+      },
+      "provisional_years": {},
+      "neighborhood": {
+        "population": 51330,
+        "median_income": 112199,
+        "median_gross_rent": 1321,
+        "renter_pct": 16.1,
+        "poverty_pct": 5.9,
+        "mean_commute_min": 28.6,
+        "rent_burdened_pct": 49.1
       },
       "sources": {
         "payment_standards_2025_2026": "Local housing authority Payment Standards PDFs",

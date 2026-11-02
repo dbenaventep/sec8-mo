@@ -168,13 +168,17 @@ def main():
 
     # Proyección provisional del próximo año desde el SAFMR federal FY<n>,
     # ya publicado por HUD aunque la autoridad local no haya sacado su PDF.
+    # SOLO para autoridades que adoptan el SAFMR ~1:1 (SLHA). St. Charles
+    # (NECAC) no lo hace, así que se excluye y queda sin 2027.
+    meta = data.get("zipMeta", {})
+    safmr_zips = {z for z in zips if meta.get(z, {}).get("adopts_safmr", True)}
     proj = {}
     if PROJECT_YEAR:
-        print(f"HUD SAFMR {PROJECT_YEAR} (provisional)...", file=sys.stderr)
+        print(f"HUD SAFMR {PROJECT_YEAR} (provisional, SAFMR-based authorities)...", file=sys.stderr)
         try:
             proj_safmr = fetch_safmr(env["HUD_API_TOKEN"], PROJECT_YEAR)
-            proj = {z: v for z, v in projected_year(proj_safmr).items() if z in zips}
-            print(f"  -> {len(proj)}/{len(zips)} ZIPs proyectados", file=sys.stderr)
+            proj = {z: v for z, v in projected_year(proj_safmr).items() if z in safmr_zips}
+            print(f"  -> {len(proj)}/{len(safmr_zips)} ZIPs proyectados", file=sys.stderr)
         except Exception as e:  # el año aún no existe en HUD -> se omite
             print(f"  -> sin datos {PROJECT_YEAR}: {e}", file=sys.stderr)
 

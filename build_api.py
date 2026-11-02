@@ -43,9 +43,12 @@ def zip_payload(zip_code, data):
         if zip_code in table
     }
     acs = data.get("acs", {}).get("byZip", {}).get(zip_code)
+    meta = data.get("zipMeta", {}).get(zip_code, {})
 
     return {
         "zip": zip_code,
+        "city": meta.get("city"),
+        "authority": meta.get("authority"),
         "bedrooms": bedrooms,
         "payment_standards": years,
         "provisional_years": {

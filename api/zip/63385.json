@@ -1,0 +1,40 @@
+{
+  "zip": "63385",
+  "city": "Wentzville",
+  "authority": "St. Charles County PHA (NECAC)",
+  "bedrooms": [
+    "Efficiency",
+    "1 Bedroom",
+    "2 Bedroom",
+    "3 Bedroom",
+    "4 Bedroom",
+    "5 Bedroom"
+  ],
+  "payment_standards": {
+    "2026": {
+      "Efficiency": 1242,
+      "1 Bedroom": 1300,
+      "2 Bedroom": 1587,
+      "3 Bedroom": 2047,
+      "4 Bedroom": 2358,
+      "5 Bedroom": 2711
+    }
+  },
+  "provisional_years": {},
+  "neighborhood": {
+    "population": 51330,
+    "median_income": 112199,
+    "median_gross_rent": 1321,
+    "renter_pct": 16.1,
+    "poverty_pct": 5.9,
+    "mean_commute_min": 28.6,
+    "rent_burdened_pct": 49.1
+  },
+  "sources": {
+    "payment_standards_2025_2026": "Local housing authority Payment Standards PDFs",
+    "payment_standards_2027": "HUD Small Area FMR FY2027",
+    "neighborhood": "ACS 2024 5-year"
+  },
+  "generated": "2026-11-02",
+  "disclaimer": "Unofficial. Payment standards for 2025/2026 are transcribed from the published Payment Standards PDFs; 2027 is provisional (projected from HUD FY2027 Small Area FMRs). Verify against the housing authority before relying on these figures."
+}

@@ -1,0 +1,40 @@
+{
+  "zip": "63301",
+  "city": "St. Charles",
+  "authority": "St. Charles County PHA (NECAC)",
+  "bedrooms": [
+    "Efficiency",
+    "1 Bedroom",
+    "2 Bedroom",
+    "3 Bedroom",
+    "4 Bedroom",
+    "5 Bedroom"
+  ],
+  "payment_standards": {
+    "2026": {
+      "Efficiency": 1114,
+      "1 Bedroom": 1160,
+      "2 Bedroom": 1415,
+      "3 Bedroom": 1837,
+      "4 Bedroom": 2100,
+      "5 Bedroom": 2435
+    }
+  },
+  "provisional_years": {},
+  "neighborhood": {
+    "population": 52667,
+    "median_income": 85308,
+    "median_gross_rent": 1154,
+    "renter_pct": 28.2,
+    "poverty_pct": 7.8,
+    "mean_commute_min": 21.9,
+    "rent_burdened_pct": 39.7
+  },
+  "sources": {
+    "payment_standards_2025_2026": "Local housing authority Payment Standards PDFs",
+    "payment_standards_2027": "HUD Small Area FMR FY2027",
+    "neighborhood": "ACS 2024 5-year"
+  },
+  "generated": "2026-11-02",
+  "disclaimer": "Unofficial. Payment standards for 2025/2026 are transcribed from the published Payment Standards PDFs; 2027 is provisional (projected from HUD FY2027 Small Area FMRs). Verify against the housing authority before relying on these figures."
+}
